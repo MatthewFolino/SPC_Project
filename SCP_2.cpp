@@ -7,17 +7,17 @@
 
 using namespace std;
 
-std::string passWord;       // a string to store the real password chosen by the user
-std::string guessWord = "a";       // a string to store the programs current guess of the password initialized to "a"
+std::string passWord;                // a string to store the real password chosen by the user
+std::string guessWord = "a";         // a string to store the programs current guess of the password initialized to "a"
 const char charSet[26] = {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'};       // an array of characters which the password can be made up of
-const int setNumber = 25;       // a constant integer denoting the size of the array of possible characters (compensated for 0 initialization)
-std::vector<int> letterInc = {0};       // a vector to represent the current character in each digit of the guess password
+const int setNumber = 25;            // a constant integer denoting the size of the array of possible characters (compensated for 0 initialization)
+std::vector<int> letterInc = {0};    // a vector to represent the current character in each digit of the password guess
 
 int wordLength = 0;       // integer representing the length of guessWord
-bool guessMatch = 0;       // bool indicating whether guessWord and passWord match
-int letterNum;       // integer indicating a specific digit of guessWord
+bool guessMatch = 0;      // bool indicating whether guessWord and passWord match
+int letterNum;            // integer indicating a specific digit of guessWord
 
-int ResetLoop(int g)       // a loop to reset one or more digits of guessword to the initial value and to add a digit to guessword
+int ResetLoop(int g)      // a loop to reset one or more digits of guessword to the initial value and to add a digit to guessword
 {
         bool x = 0;
         int counter1 = g;
@@ -138,7 +138,7 @@ void AddLetter()
     for(int i=wordLength; i>= 0; i--)
     {
         letterInc[i] = 0;
-        guessWord[i] = charSet[letterInc[i]];
+        guessWord[i] = charSet[0];
         std::cout<<guessWord<<endl;
     }
 }
