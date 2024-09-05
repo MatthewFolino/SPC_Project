@@ -16,7 +16,7 @@ std::vector<int> letterInc = {0};    // a vector to represent the current charac
 int wordLength = 0;       // integer representing the length of guessWord (0 initialized)
 bool guessMatch = 0;      // bool indicating whether guessWord and passWord match
 int letterNum;            // integer indicating a specific digit of guessWord
-int curntDigi;          // interger used by the ResetLoop function to keep track of which digit of guessword it is operating on
+int curntDigi;            // interger used by the ResetLoop function to keep track of which digit of guessword it is operating on
 
 int ResetLoop(int g)      // a loop to reset one or more digits of guessword to the initial value and to add a digit to guessword
 {
@@ -45,9 +45,9 @@ int ResetLoop(int g)      // a loop to reset one or more digits of guessword to 
             }
             for(int i=curntDigi-1; i>=0; i--)
             {
-                if(guessWord[(curntDigi - 1)] == charSet[setNumber])
+                if(guessWord[(i)] == charSet[setNumber])
                 {
-                    letterInc[(curntDigi - 1)] = 0;
+                    letterInc[(i)] = 0;
                     if (guessWord == passWord)
                     {
                         guessMatch = 1;
@@ -97,7 +97,7 @@ int IncLoop(int x)
         }
         else
         {
-            if (x == 0)
+            if (letterNum == 0)
             {
                 for (int i=0; i<=setNumber; i++)
                 {
