@@ -20,6 +20,14 @@ bool guessMatch = 0;      // bool indicating whether guessWord and passWord matc
 int letterNum;            // integer indicating a specific digit of guessWord
 int curntDigi;            // interger used by the ResetLoop function to keep track of which digit of guessword it is operating on
 
+void CheckGuess()
+{
+    if (guessWord == passWord)     // checks for a correct password guess
+    {
+        guessMatch = 1;
+    }
+}
+
 int ResetLoop(int g)      // The ResetLoop function increments the next digit in guessWord and resets the previous digits to zero
 {
         bool x = 0;     // local bool x controls the do/while loop 
@@ -37,26 +45,20 @@ int ResetLoop(int g)      // The ResetLoop function increments the next digit in
         else
         {
             letterInc[curntDigi]++;     // increments the digit of letterInc which corresponds to the current value of curntDigi
-            if (guessWord == passWord)     // checks for a correct password guess
+            CheckGuess();
+            if (guessMatch == 1)
             {
-                guessMatch = 1;
-                std::cout<<"Is this your password?"<<std::endl;
-                std::cout<<guessWord<<std::endl;
                 return 1;
-
             }
             for(int i=curntDigi-1; i>=0; i--)     // for loop which iterates once for each guessword digit with an index lesser than the current value of curntDigi
             {
                 if(guessWord[(i)] == charSet[setNumber])   // if the current digit of guessword is at the max value
                 {
                     letterInc[(i)] = 0;   // reset the leterInc digit representing the guessword digit with the index i to 0
-                    if (guessWord == passWord)   // checks for a correct password guess
+                    CheckGuess();
+                    if (guessMatch == 1)
                     {
-                        guessMatch = 1;
-                        std::cout<<"Is this your password?"<<std::endl;
-                        std::cout<<guessWord<<std::endl;
                         return 1;
-
                     }
                     std::cout<<guessWord<<endl;
                 }
@@ -70,13 +72,10 @@ int ResetLoop(int g)      // The ResetLoop function increments the next digit in
 int IncLoop(int x)   // IncLoop function increments through all possible values for the lowest digit of guessWord, it is also able to call the ResetLoop function to increment higher digits and call itself to continue of iterate through values of the lowest digit after
                      // higher digits have been incremented
 {
-        if (guessWord == passWord)   // checks for a correct password guess
+    CheckGuess();
+    if (guessMatch == 1)
         {
-            guessMatch = 1;
-            std::cout<<"Is this your password?"<<std::endl;
-            std::cout<<guessWord<<std::endl;
             return 1;
-
         }
 
         letterNum = x;   // sets the value of the letterNum int to the parameter of IncLoop x
@@ -88,13 +87,10 @@ int IncLoop(int x)   // IncLoop function increments through all possible values 
                 letterInc[0] = i;     // sets the 0th digit of letterInc to i
                 guessWord[0] = charSet[letterInc[0]];    //sets the 0th digit of guessWord to the digit of charSet given by the value of the 0th digit of letterInc
             
-                 if (guessWord == passWord)     // checks for a correct password guess
+                CheckGuess();
+                 if (guessMatch == 1)
                 {
-                    guessMatch = 1;
-                    std::cout<<"Is this your password?"<<std::endl;
-                    std::cout<<guessWord<<std::endl;
                     return 1;
-
                 }
                 std::cout<<guessWord<<endl;
             }
@@ -108,13 +104,10 @@ int IncLoop(int x)   // IncLoop function increments through all possible values 
                     letterInc[0] = i;   // sets the 0th digit of letterInc to i
                     guessWord[0] = charSet[letterInc[0]];   // sets the 0th digit of guessWord to the digit of charSet represented by the value of the 0th digit of letterInc
                     
-                    if (guessWord == passWord)   // checks for a correct password guess
+                    CheckGuess();
+                    if (guessMatch == 1)
                     {
-                        guessMatch = 1;
-                        std::cout<<"Is this your password?"<<std::endl;
-                        std::cout<<guessWord<<std::endl;
                         return 1;
-
                     }
                     std::cout<<guessWord<<endl;
                 }
@@ -159,7 +152,7 @@ int main()
 
     for (int i=0; i<n; i++)   // for loop iterates as many times as the max number of letters the password can have
     {
-    if (guessWord == passWord)   // checks for a correct password guess
+    if (guessMatch == 1)
     {
         std::cout<<"Is this your password?"<<std::endl;
         std::cout<<guessWord<<std::endl;
@@ -168,6 +161,8 @@ int main()
     IncLoop(wordLength);   // calls the IncLoop function with parameter wordLength
     if (guessMatch == 1)   // if there is a correct guess break out of the loop
     {
+        std::cout<<"Is this your password?"<<std::endl;
+        std::cout<<guessWord<<std::endl;
         break;
     }
     AddLetter();   // calls the AddLetter function
