@@ -8,12 +8,10 @@
 using namespace std;
 
 std::string passWord;                    // a string to store the real password chosen by the user
-std::string guessWord = "a";             // a string to store the programs current guess of the password initialized to "a"
-const char charSet[26] = {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'};       // an array of characters which the password can be made up of
+char charSet[26] = {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'};       // an array of characters which the password can be made up of
 const int setNumber = 25;                // a constant integer denoting the size of the array of possible characters (compensated for 0 initialization)
 std::vector<int> letterInc = {0};        // a vector to represent the current character in each digit of the password guess
-letterInc [0] = 0;                       // initializes the first/only digit of letterInc to 0
-guessWord [0] = charSet[letterInc[0]];   // sets the value of the first/only digit of guessword to the digit of charSet indicated by the value of the first digit of letterinc
+std::string guessWord [0] = charSet[letterInc[0]];   // sets the value of the first/only digit of guessword to the digit of charSet indicated by the value of the first digit of letterinc
 
 int wordLength = 0;       // integer representing the length of guessWord (0 initialized)
 bool guessMatch = 0;      // bool indicating whether guessWord and passWord match
