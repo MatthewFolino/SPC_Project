@@ -14,8 +14,8 @@ std::string guessWord = "a";
 
 int wordLength = 0;       // integer representing the length of guessWord (0 initialized)
 bool guessMatch = 0;      // bool indicating whether guessWord and passWord match
-int letterNum;            // integer indicating a specific digit of guessWord
-int curntDigi;            // interger used by the ResetLoop function to keep track of which digit of guessword it is operating on
+bool loopStop = 0;            // sfds
+int curntDigi = 0;            // interger used by the ResetLoop function to keep track of which digit of guessword it is operating on
 
 void CheckGuess()   // Checks if guessWord matches password and updates guessMatch accordingly
 {
@@ -25,59 +25,60 @@ void CheckGuess()   // Checks if guessWord matches password and updates guessMat
     }
 }
 
-int ResetLoop(int g)      // The ResetLoop function increments the next digit in guessWord and resets the previous digits to zero
+void ResetLoop()      // The ResetLoop function increments the next digit in guessWord and resets the previous digits to zero
 {
-        bool x = 0;     // local bool x controls the do/while loop 
-        curntDigi = g;     // sets the curntDigi integer to the parameter of the ResetLoop function g
-        do{
-        if (guessWord[wordLength] == charSet[setNumber])     // compares the greatest digit of guessWord to the last digit of charSet
-        {
-            break;     // breaks out of the loop ending the function if the current guessWord is at its final iteration for its current length
-        }
-        if(guessWord[curntDigi] == charSet[setNumber])     // compares the digit of guessWord that coresponds with the current value of curntDigi to the final value of charSet
-        {
-            ResetLoop((curntDigi + 1));     // recursively calls the ResetLoop function with the parameter set to curntDigi + 1, this will allow the function to cycle through the digits of guessWord from least to greatest to find the digit wich needs to be incremented
-        }
+    bool x = 0;
 
-        else
+    do{
+     if (guessWord[wordLength] == charSet[setNumber])     // compares the greatest digit of guessWord to the last digit of charSet
+    {
+        loopStop = 1;
+        break;     // breaks out of the loop ending the function if the current guessWord is at its final iteration for its current length
+    }
+    if(guessWord[curntDigi] == charSet[setNumber])     // compares the digit of guessWord that coresponds with the current value of curntDigi to the final value of charSet
+    {
+        curntDigi ++;
+        ResetLoop();     // recursively calls the ResetLoop function with the parameter set to curntDigi + 1, this will allow the function to cycle through the digits of guessWord from least to greatest to find the digit wich needs to be incremented
+    }
+
+    else
+    {
+        letterInc[curntDigi]++;     // increments the digit of letterInc which corresponds to the current value of curntDigi
+        if (guessWord[wordLength] == charSet[setNumber])
         {
-            letterInc[curntDigi]++;     // increments the digit of letterInc which corresponds to the current value of curntDigi
-            CheckGuess();   // checks if the current guess is correct
-            if (guessMatch == 1)   // if the guess is correct exit the function
-            {
-                return 1;
-            }
-            for(int i=curntDigi-1; i>=0; i--)     // for loop which iterates once for each guessword digit with an index lesser than the current value of curntDigi
-            {
-                if(guessWord[(i)] == charSet[setNumber])   // if the current digit of guessword is at the max value
-                {
-                    letterInc[(i)] = 0;   // reset the leterInc digit representing the guessword digit with the index i to 0
-                    CheckGuess();   // Checks if the current guess is correct
-                    if (guessMatch == 1)   // if the guess is correct exit the function
-                    {
-                        return 1;
-                    }
-                    std::cout<<guessWord<<endl;
-                }
-            }
-        letterNum++;   // increments the letterNum integer, this allows the IncLoop function to continue to recursively call itself after a higher digit of guessWord has been incremented and the lower digits have been reset until all options have been tested
+            loopStop = 1;
+            break;
         }
-        }while(x == 1);
-        return 0;
+        CheckGuess();   // checks if the current guess is correct
+        if (guessMatch == 1)   // if the guess is correct exit the function
+        {
+            return;
+        }
+        for(int i=curntDigi-1; i>=0; i--)     // for loop which iterates once for each guessword digit with an index lesser than the current value of curntDigi
+        {
+            letterInc[(i)] = 0;   // reset the leterInc digit representing the guessword digit with the index i to 0
+            CheckGuess();   // Checks if the current guess is correct
+             if (guessMatch == 1)   // if the guess is correct exit the function
+                {
+                    return;
+                }
+            std::cout<<guessWord<<endl;
+        }
+    }
+    }
+    while (x == 1);
 }
 
-int IncLoop(int x)   // IncLoop function increments through all possible values for the lowest digit of guessWord, it is also able to call the ResetLoop function to increment higher digits and call itself to continue of iterate through values of the lowest digit after
+void IncLoop()   // IncLoop function increments through all possible values for the lowest digit of guessWord, it is also able to call the ResetLoop function to increment higher digits and call itself to continue of iterate through values of the lowest digit after
                      // higher digits have been incremented
 {
     CheckGuess();   // Checks if the current guess is correct
     if (guessMatch == 1)   // if the current guess is correct exit the function
         {
-            return 1;
+            return;
         }
 
-        letterNum = x;   // sets the value of the letterNum int to the parameter of IncLoop x
-
-        if (wordLength == 0)     // if guessWord is only 1 digit long
+        if (loopStop == 0)     // 
         {
             for (int i=0; i<=setNumber; i++)     // for loop iterates the amount of times as there are digits in charSet
             {
@@ -87,39 +88,13 @@ int IncLoop(int x)   // IncLoop function increments through all possible values 
                 CheckGuess();   // checks if the current guess is correct
                  if (guessMatch == 1)   // if the current guess is correct exit the function
                 {
-                    return 1;
+                    return;
                 }
                 std::cout<<guessWord<<endl;
             }
+            ResetLoop();
+            IncLoop();
         }
-        else
-        {
-            if (letterNum == 0)   // if the value of letterNum is 0
-            {
-                for (int i=0; i<=setNumber; i++)   // for loop iterates as many times as the number of digits in charSet
-                {
-                    letterInc[0] = i;   // sets the 0th digit of letterInc to i
-                    guessWord[0] = charSet[letterInc[0]];   // sets the 0th digit of guessWord to the digit of charSet represented by the value of the 0th digit of letterInc
-                    
-                    CheckGuess();   // checks if the current guess is correct
-                    if (guessMatch == 1)   //  if the current guess is correct exit the function
-                    {
-                        return 1;
-                    }
-                    std::cout<<guessWord<<endl;
-                }
-            }
-            if(guessWord[letterNum] == charSet[setNumber])   // if the digit of guessword corresponding to the value of letterNum is the max value
-            {
-                ResetLoop(letterNum);   // call the ResetLoop function with the parameter letterNum
-            }
-            if(letterNum > 0)   // if letterNum is greater than 0
-            {
-                letterNum--;   // decrement letterNum
-                IncLoop(letterNum);   // recursively call the IncLoop function with the parameter letterNum
-            }
-        }
-        return 0;
 }
 
 void AddLetter()   // the AddLetter functionin increases the size of the guessWord variable by 1 and accordingly resizes the letterInc vector, increments the wordLength integer and resets the digits of guessWord to 0 and sets the digits of guessWord equal to the 
@@ -134,6 +109,8 @@ void AddLetter()   // the AddLetter functionin increases the size of the guessWo
         guessWord[i] = charSet[letterInc[i]];
         std::cout<<guessWord<<endl;
     }
+    loopStop = 0;
+    curntDigi = 0;
 }
 
 int main()
@@ -155,7 +132,7 @@ int main()
         std::cout<<guessWord<<std::endl;
         break;
     }
-    IncLoop(wordLength);   // calls the IncLoop function with parameter wordLength
+    IncLoop();   // calls the IncLoop function with parameter wordLength
     if (guessMatch == 1)   // if there is a correct guess break out of the loop and output guess message
     {
         std::cout<<"Is this your password?"<<std::endl;
