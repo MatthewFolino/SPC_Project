@@ -44,6 +44,7 @@ void ResetLoop()      // The ResetLoop function increments the next digit in gue
     else
     {
         letterInc[curntDigi]++;     // increments the digit of letterInc which corresponds to the current value of curntDigi
+        guessWord[curntDigi] = charSet[letterInc[curntDigi]];
         if (guessWord[wordLength] == charSet[setNumber])
         {
             loopStop = 1;
@@ -57,13 +58,14 @@ void ResetLoop()      // The ResetLoop function increments the next digit in gue
         for(int i=curntDigi-1; i>=0; i--)     // for loop which iterates once for each guessword digit with an index lesser than the current value of curntDigi
         {
             letterInc[(i)] = 0;   // reset the leterInc digit representing the guessword digit with the index i to 0
+            guessWord[i] = charSet[letterInc[i]];
             CheckGuess();   // Checks if the current guess is correct
              if (guessMatch == 1)   // if the guess is correct exit the function
                 {
                     return;
                 }
-            std::cout<<guessWord<<endl;
         }
+        curntDigi = 0;
     }
     }
     while (x == 1);
@@ -90,7 +92,6 @@ void IncLoop()   // IncLoop function increments through all possible values for 
                 {
                     return;
                 }
-                std::cout<<guessWord<<endl;
             }
             ResetLoop();
             IncLoop();
@@ -107,7 +108,6 @@ void AddLetter()   // the AddLetter functionin increases the size of the guessWo
     {
         letterInc[i] = 0;
         guessWord[i] = charSet[letterInc[i]];
-        std::cout<<guessWord<<endl;
     }
     loopStop = 0;
     curntDigi = 0;
@@ -132,7 +132,7 @@ int main()
         std::cout<<guessWord<<std::endl;
         break;
     }
-    IncLoop();   // calls the IncLoop function with parameter wordLength
+    IncLoop();   // calls the IncLoop function
     if (guessMatch == 1)   // if there is a correct guess break out of the loop and output guess message
     {
         std::cout<<"Is this your password?"<<std::endl;
