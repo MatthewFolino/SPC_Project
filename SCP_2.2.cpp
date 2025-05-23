@@ -13,15 +13,15 @@ std::vector<int> letterInc = {0};        // a vector to represent the current ch
 std::string guessWord = "a";             // a string representing the programs guess of the password
 
 int wordLength = 0;       // integer representing the length of guessWord (0 initialized)
-bool guessMatch = 0;      // bool indicating whether guessWord and passWord match
-bool loopStop = 0;        // bool which controls the recursion of IncLoop
+bool guessMatch = false;      // bool indicating whether guessWord and passWord match
+bool loopStop = false;        // bool which controls the recursion of IncLoop
 int curntDigi = 0;        // interger used by the ResetLoop function to keep track of which digit of guessword it is operating on
 
 void CheckGuess()   // Checks if guessWord matches password and updates guessMatch accordingly
 {
     if (guessWord == passWord)
     {
-        guessMatch = 1;
+        guessMatch = true;
     }
 }
 
@@ -32,7 +32,7 @@ void ResetLoop()      // The ResetLoop function increments the next digit in gue
     do{
      if (guessWord[wordLength] == charSet[setNumber])     // if the last diggit of guessWord is equal to the last character in charSet, stop incLoops recursion, and break out of the main loop
     {
-        loopStop = 1;
+        loopStop = true;
         break;     
     }
     if(guessWord[curntDigi] == charSet[setNumber])       // if the current digit of guessWord = the last character of charSet, increment curntDigi and recursively call ResetLoop
@@ -47,7 +47,7 @@ void ResetLoop()      // The ResetLoop function increments the next digit in gue
         guessWord[curntDigi] = charSet[letterInc[curntDigi]];
         if (guessWord[wordLength] == charSet[setNumber])
         {
-            loopStop = 1;
+            loopStop = true;
             break;
         }
         CheckGuess();
@@ -60,7 +60,7 @@ void ResetLoop()      // The ResetLoop function increments the next digit in gue
             letterInc[(i)] = 0;
             guessWord[i] = charSet[letterInc[i]];
             CheckGuess();
-             if (guessMatch == 1)
+             if (guessMatch == true)
                 {
                     return;
                 }
@@ -74,12 +74,12 @@ void ResetLoop()      // The ResetLoop function increments the next digit in gue
 void IncLoop()         // The IncLoop functioniterates through all possible values of the first digit of guessWord before calling ResetLoop and then itself
 {
     CheckGuess();      // Checks for a guess match and terminates the function if found
-    if (guessMatch == 1)
+    if (guessMatch == true)
         {
             return;
         }
 
-        if (loopStop == 0)     // if the IncLoop control variable = = 0 iterate through all characters of charSet assigning them to the first digit of guessWord through letterInc
+        if (loopStop == false)     // if the IncLoop control variable = = 0 iterate through all characters of charSet assigning them to the first digit of guessWord through letterInc
         {
             for (int i=0; i<=setNumber; i++)
             {
@@ -87,7 +87,7 @@ void IncLoop()         // The IncLoop functioniterates through all possible valu
                 guessWord[0] = charSet[letterInc[0]];
             
                 CheckGuess();
-                 if (guessMatch == 1)
+                 if (guessMatch == true)
                 {
                     return;
                 }
@@ -107,7 +107,7 @@ void AddLetter()   // the AddLetter function increases the size of letterInc, wo
         letterInc[i] = 0;
         guessWord[i] = charSet[letterInc[i]];
     }
-    loopStop = 0;
+    loopStop = false;
     curntDigi = 0;
 }
 
@@ -124,14 +124,14 @@ int main()
 
     for (int i=0; i<n; i++)   // check all possible combinations of characters for a password starting at 1 digit long and increaseing the size each time up to n times
     {
-    if (guessMatch == 1)
+    if (guessMatch == true)
     {
         std::cout<<"Is this your password?"<<std::endl;
         std::cout<<guessWord<<std::endl;
         break;
     }
     IncLoop();   // calls the IncLoop function
-    if (guessMatch == 1)
+    if (guessMatch == true)
     {
         std::cout<<"Is this your password?"<<std::endl;
         std::cout<<guessWord<<std::endl;
