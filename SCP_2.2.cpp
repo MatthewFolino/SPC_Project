@@ -9,7 +9,7 @@ using namespace std;
 
 char characterSet[26] = {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'};       // an array of characters which the password can be made up of
 std::string passWord;                          // Stores the real password chosen by the user
-const int setNumber = 25;                      // Size of the array of possible password characters (compensated for 0 initialization)
+extern const int setNumber = 25;                      // Size of the array of possible password characters (compensated for 0 initialization)
 std::vector<int> guessLetterTracker = {0};     // Tracks the characters of each digit of the guess password
 std::string guessWord = "a";                   // The guess password
 
@@ -105,7 +105,7 @@ void AddLetter()     // Add a letter to guessWord and update variables according
 
 int main()
 {
-    int n = 4;     // Max password length (testing purposes)
+    int n = 5;     // Max password length (testing purposes)
 
     std::cout << "This program will attempt to guess a password of your choice."<<std::endl;
     std::cout << "Please enter a maximum " << n << " digit long password using the following characters only"<< std::endl;
